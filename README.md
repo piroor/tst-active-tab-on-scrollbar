@@ -1,6 +1,6 @@
 # tst-active-tab-on-scrollbar
 
-![Build Status](https://github.com/piroor/tst-active-tab-on-scrollbar/actions/workflows/main.yml/badge.svg?branch=main)
+![Build Status](https://github.com/piroor/tst-active-tab-on-scrollbar/actions/workflows/main.yml/badge.svg?branch=trunk)
 
 Install package is available at https://addons.mozilla.org/firefox/addon/tst-active-tab-on-scroll-bar/
 
