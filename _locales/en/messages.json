@@ -1,0 +1,10 @@
+{
+  "extensionName": { "message": "TST Active Tab on Scroll Bar" },
+  "extensionDescription": { "message": "Provides a marker to indicate active tab position in Tree Style Tab sidebar." },
+
+  "config_colorMode_caption":   { "message": "Color of the marker:" },
+  "config_colorCode_label":     { "message": "Picked Color" },
+  "config_colorCSSValue_label": { "message": "CSS Value" },
+  "config_opacity_label":       { "message": "Opacity (0-1)" },
+  "config_width_label":         { "message": "Width" }
+}

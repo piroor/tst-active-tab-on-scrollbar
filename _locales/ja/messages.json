@@ -1,0 +1,10 @@
+{
+  "extensionName": { "message": "TST Active Tab on Scroll Bar" },
+  "extensionDescription": { "message": "Tree Style Tabのスクロールバー上に、アクティブなタブの位置を表示します。" },
+
+  "config_colorMode_caption":   { "message": "マーカーの色:" },
+  "config_colorCode_label":     { "message": "ピッカーで選択" },
+  "config_colorCSSValue_label": { "message": "CSSの値" },
+  "config_opacity_label":       { "message": "不透明度(0-1)" },
+  "config_width_label":         { "message": "幅" }
+}
