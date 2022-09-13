@@ -2,6 +2,6 @@
 
  - master/HEAD
  - 1.1 (2022.9.13)
-   * Follow changes to TST 3.9.0.
+   * Follow to changes on TST 3.9.0.
  - 1.0 (2021.8.7)
    * Initial release.
