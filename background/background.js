@@ -130,8 +130,25 @@ function reserveToUpdateActiveTabMarker(windowId) {
       const position = visibleItems.findIndex(item => item.id == activeTabId);
       stylesForWindow.set(windowId, `
         .tabs#window-${windowId}::after {
-          height: calc((100% - var(--tabbar-top-area-size, 0px) - var(--pinned-tabs-area-size) - var(--subpanel-area-size) - var(--after-tabs-area-size) - var(--tabbar-bottom-area-size, 0px)) / ${visibleItems.length});
-          top: calc(var(--tabbar-top-area-size, 0px) + var(--pinned-tabs-area-size) + ((100% - var(--tabbar-top-area-size, 0px) - var(--pinned-tabs-area-size) - var(--subpanel-area-size) - var(--after-tabs-area-size) - var(--tabbar-bottom-area-size, 0px)) / ${visibleItems.length} * ${position}));
+          height: calc(
+            (100%
+             - var(--tabbar-top-area-size, 0px)
+             - var(--pinned-tabs-area-size)
+             - var(--subpanel-area-size)
+             - var(--after-tabs-area-size)
+             - var(--tabbar-bottom-area-size, 0px)) / ${visibleItems.length}
+          );
+          top: calc(
+            var(--tabbar-top-area-size, 0px)
+            + var(--pinned-tabs-area-size)
+            + ((100%
+                - var(--tabbar-top-area-size, 0px)
+                - var(--pinned-tabs-area-size)
+                - var(--subpanel-area-size)
+                - var(--after-tabs-area-size)
+                - var(--tabbar-bottom-area-size, 0px))
+               / ${visibleItems.length} * ${position})
+          );
         }
       `);
     }
