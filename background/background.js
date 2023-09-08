@@ -129,25 +129,36 @@ function reserveToUpdateActiveTabMarker(windowId) {
       const visibleItems = treeItems.filter(item => (!item.states.includes('collapsed') && regularTabIds.has(item.id)) || item.id == activeTabId);
       const position = visibleItems.findIndex(item => item.id == activeTabId);
       stylesForWindow.set(windowId, `
-        .tabs#window-${windowId}::after {
-          height: calc(
-            (100%
+        .tabs#window-${windowId} {
+          --active-tab-on-scrollbar-area-size: calc(
+            100%
              - var(--tabbar-top-area-size, 0px)
              - var(--pinned-tabs-area-size)
              - var(--subpanel-area-size)
              - var(--after-tabs-area-size)
-             - var(--tabbar-bottom-area-size, 0px)) / ${visibleItems.length}
+             - var(--tabbar-bottom-area-size, 0px)
           );
+          --active-tab-on-scrollbar-calculated-thumb-size: calc(
+            var(--active-tab-on-scrollbar-area-size) / ${visibleItems.length}
+          );
+          --active-tab-on-scrollbar-visible-thumb-size: max(
+            var(--active-tab-on-scrollbar-calculated-thumb-size),
+            var(--favicon-size)
+          );
+          --active-tab-on-scrollbar-thumb-offset: calc(
+            (var(--active-tab-on-scrollbar-visible-thumb-size) - var(--active-tab-on-scrollbar-calculated-thumb-size)) / 2
+          );
+          --active-tab-on-scrollbar-effective-area-size: calc(
+            var(--active-tab-on-scrollbar-area-size) - (var(--active-tab-on-scrollbar-thumb-offset) * 2)
+          );
+        }
+        .tabs#window-${windowId}::after {
+          height: var(--active-tab-on-scrollbar-visible-thumb-size);
           top: calc(
             var(--tabbar-top-area-size, 0px)
             + var(--pinned-tabs-area-size)
-            + ((100%
-                - var(--tabbar-top-area-size, 0px)
-                - var(--pinned-tabs-area-size)
-                - var(--subpanel-area-size)
-                - var(--after-tabs-area-size)
-                - var(--tabbar-bottom-area-size, 0px))
-               / ${visibleItems.length} * ${position})
+            + var(--active-tab-on-scrollbar-thumb-offset)
+            + ((var(--active-tab-on-scrollbar-effective-area-size) / ${visibleItems.length}) * ${position})
           );
         }
       `);
