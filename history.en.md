@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.2.1 (2023.9.9)
+   * Apply updated minimum height immediately.
  - 1.2 (2023.9.9)
    * Add ability to set the minimum height of the marker for too many tabs.
  - 1.1 (2022.9.13)
