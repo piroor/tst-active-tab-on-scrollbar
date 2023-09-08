@@ -13,6 +13,7 @@ export const configs = new Configs({
   colorCSSValue: 'Highlight',
   opacity:       '0.5',
   width:         '8px',
+  minHeight:     '16px',
 }, {
   localKeys: [
   ]

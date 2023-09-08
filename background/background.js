@@ -143,7 +143,7 @@ function reserveToUpdateActiveTabMarker(windowId) {
           );
           --active-tab-on-scrollbar-visible-thumb-size: max(
             var(--active-tab-on-scrollbar-calculated-thumb-size),
-            var(--favicon-size)
+            ${configs.minHeight}
           );
           --active-tab-on-scrollbar-thumb-offset: calc(
             (var(--active-tab-on-scrollbar-visible-thumb-size) - var(--active-tab-on-scrollbar-calculated-thumb-size)) / 2
