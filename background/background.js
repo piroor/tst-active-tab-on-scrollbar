@@ -41,6 +41,7 @@ configs.$addObserver(key => {
     case 'colorCSSValue':
     case 'opacity':
     case 'width':
+    case 'minHeight':
       applyStyles();
       return;
   }
