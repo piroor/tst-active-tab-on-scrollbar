@@ -130,6 +130,7 @@ function reserveToUpdateActiveTabMarker(windowId) {
       const visibleItems = treeItems.filter(item => (!item.states.includes('collapsed') && regularTabIds.has(item.id)) || item.id == activeTabId);
       const position = visibleItems.findIndex(item => item.id == activeTabId);
       stylesForWindow.set(windowId, `
+        #tabbar[data-window-id="${windowId}"] #normal-tabs-container-wrapper,
         .tabs#window-${windowId} {
           --active-tab-on-scrollbar-area-size: calc(
             100%
@@ -153,6 +154,7 @@ function reserveToUpdateActiveTabMarker(windowId) {
             var(--active-tab-on-scrollbar-area-size) - (var(--active-tab-on-scrollbar-thumb-offset) * 2)
           );
         }
+        #tabbar[data-window-id="${windowId}"] #normal-tabs-container-wrapper::after,
         .tabs#window-${windowId}::after {
           height: var(--active-tab-on-scrollbar-visible-thumb-size);
           top: calc(
@@ -178,6 +180,7 @@ function applyStyles() {
   browser.runtime.sendMessage(TST_ID, {
     type: 'register-self' ,
     style: `
+      #tabbar.overflow #normal-tabs-container-wrapper::after,
       #tabbar.overflow .tabs::after {
         background: ${color};
         content: " ";
@@ -188,9 +191,15 @@ function applyStyles() {
         /*transition: top var(--collapse-animation);*/
         width: ${configs.width};
       }
+      #tabbar.overflow #normal-tabs-container-wrapper .tabs::after {
+        content: none;
+        display: none;
+      }
+      :root.left #normal-tabs-container-wrapper::after,
       :root.left .tabs::after {
         left: 0;
       }
+      :root.right #normal-tabs-container-wrapper::after,
       :root.right .tabs::after {
         right: 0;
       }
