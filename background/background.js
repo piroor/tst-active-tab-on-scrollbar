@@ -180,8 +180,8 @@ function applyStyles() {
   browser.runtime.sendMessage(TST_ID, {
     type: 'register-self' ,
     style: `
-      #tabbar.overflow #normal-tabs-container-wrapper::after,
-      #tabbar.overflow .tabs::after {
+      #tabbar.overflow #normal-tabs-container-wrapper::after /* for TST 4.x or later */,
+      #tabbar.overflow .tabs::after /* for TST 3.x or older */ {
         background: ${color};
         content: " ";
         display: inline-block;
@@ -191,6 +191,7 @@ function applyStyles() {
         /*transition: top var(--collapse-animation);*/
         width: ${configs.width};
       }
+      /* this declaration should be removed after TST 3.x become outdated */
       #tabbar.overflow #normal-tabs-container-wrapper .tabs::after {
         content: none;
         display: none;
