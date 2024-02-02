@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.3 (2024.2.2)
+   * Prepare to support next version TST.
  - 1.2.1 (2023.9.9)
    * Apply updated minimum height immediately.
  - 1.2 (2023.9.9)
