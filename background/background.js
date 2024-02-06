@@ -141,7 +141,7 @@ function reserveToUpdateActiveTabMarker(windowId) {
         return tab.id;
       }));
       if (visibleItems && visibleItems.length > 0) {
-        const visibleIds = new Set(visibleTabs.map(tab => tab.id));
+        const visibleIds = new Set(visibleItems.map(tab => tab.id));
         return regularTabs.filter(tab => tab.active || visibleIds.has(tab.id));
       }
       const treeItems = await browser.runtime.sendMessage(TST_ID, {
