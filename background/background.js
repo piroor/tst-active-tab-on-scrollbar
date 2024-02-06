@@ -146,7 +146,6 @@ function reserveToUpdateActiveTabMarker(windowId) {
       if (activeTabs.length > 0)
         activeTabId = activeTabs[0].id;
       if (visibleItems && visibleItems.length > 0) {
-        startAt = Date.now();
         if (activeTabId) {
           position = visibleItems.findIndex(item => item.id == activeTabId);
           if (position < 0) {
@@ -156,7 +155,6 @@ function reserveToUpdateActiveTabMarker(windowId) {
         }
         return visibleItems;
       }
-      startAt = Date.now();
       const [regularTabs, treeItems] = await Promise.all([
         browser.tabs.query({ pinned: false, hidden: false, windowId }),
         browser.runtime.sendMessage(TST_ID, {
