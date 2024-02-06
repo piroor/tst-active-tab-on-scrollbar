@@ -128,32 +128,51 @@ function reserveToUpdateActiveTabMarker(windowId) {
   reserveToUpdateActiveTabMarker.timers.set(windowId, setTimeout(async () => {
     reserveToUpdateActiveTabMarker.timers.delete(windowId);
 
-    const regularTabs = await browser.tabs.query({ pinned: false, hidden: false, windowId });
     let activeTabId;
-    const visibleItems = await browser.runtime.sendMessage(TST_ID, {
-      type: mGetTreeType,
-      tabs: 'AllVisible',
-      windowId,
-    }).then(async (visibleItems) => {
-      const regularTabIds = new Set(regularTabs.map(tab => {
-        if (tab.active)
-          activeTabId = tab.id;
-        return tab.id;
-      }));
-      if (visibleItems && visibleItems.length > 0) {
-        const visibleIds = new Set(visibleItems.map(tab => tab.id));
-        return regularTabs.filter(tab => tab.active || visibleIds.has(tab.id));
-      }
-      const treeItems = await browser.runtime.sendMessage(TST_ID, {
+    let position = -1;
+    const visibleItems = await Promise.all([
+      browser.runtime.sendMessage(TST_ID, {
         type: mGetTreeType,
-        tabs: '*',
+        tabs: 'NormalVisibles',
         windowId,
-      });
-      return treeItems.filter(item => (!item.states.includes('collapsed') && regularTabIds.has(item.id)) || item.id == activeTabId);
+        interval: 100,
+      }),
+      browser.tabs.query({
+        active: true,
+        pinned: false,
+        windowId,
+      }),
+    ]).then(async ([visibleItems, activeTabs]) => {
+      if (activeTabs.length > 0)
+        activeTabId = activeTabs[0].id;
+      if (visibleItems && visibleItems.length > 0) {
+        startAt = Date.now();
+        if (activeTabId) {
+          position = visibleItems.findIndex(item => item.id == activeTabId);
+          if (position < 0) {
+            visibleItems = [...visibleItems, ...activeTabs].sort((a, b) => a.index - b.index);
+            position = visibleItems.findIndex(item => item.id == activeTabId);
+          }
+        }
+        return visibleItems;
+      }
+      startAt = Date.now();
+      const [regularTabs, treeItems] = await Promise.all([
+        browser.tabs.query({ pinned: false, hidden: false, windowId }),
+        browser.runtime.sendMessage(TST_ID, {
+          type: mGetTreeType,
+          tabs: '*',
+          windowId,
+          interval: 100,
+        }),
+      ]);
+      const regularTabIds = new Set(regularTabs.map(tab => tab.id));
+      visibleItems = treeItems.filter(item => (!item.states.includes('collapsed') && regularTabIds.has(item.id)) || item.id == activeTabId);
+      position = visibleItems.findIndex(item => item.id == activeTabId);
+      return visibleItems;
     });
 
     if (activeTabId) {
-      const position = visibleItems.findIndex(item => item.id == activeTabId);
       stylesForWindow.set(windowId, `
         #tabbar[data-window-id="${windowId}"] #normal-tabs-container,
         .tabs#window-${windowId} {
