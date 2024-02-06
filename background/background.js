@@ -128,25 +128,31 @@ function reserveToUpdateActiveTabMarker(windowId) {
   reserveToUpdateActiveTabMarker.timers.set(windowId, setTimeout(async () => {
     reserveToUpdateActiveTabMarker.timers.delete(windowId);
 
-    const [regularTabs, treeItems] = await Promise.all([
-      browser.tabs.query({ pinned: false, hidden: false, windowId }),
-      browser.runtime.sendMessage(TST_ID, {
+    const regularTabs = await browser.tabs.query({ pinned: false, hidden: false, windowId });
+    let activeTabId;
+    const visibleItems = await browser.runtime.sendMessage(TST_ID, {
+      type: mGetTreeType,
+      tabs: 'AllVisible',
+      windowId,
+    }).then(async (visibleItems) => {
+      const regularTabIds = new Set(regularTabs.map(tab => {
+        if (tab.active)
+          activeTabId = tab.id;
+        return tab.id;
+      }));
+      if (visibleItems && visibleItems.length > 0) {
+        const visibleIds = new Set(visibleTabs.map(tab => tab.id));
+        return regularTabs.filter(tab => tab.active || visibleIds.has(tab.id));
+      }
+      const treeItems = await browser.runtime.sendMessage(TST_ID, {
         type: mGetTreeType,
         tabs: '*',
         windowId,
-      }),
-    ]);
-
-    let activeTabId;
-    const regularTabIds = new Set();
-    for (const tab of regularTabs) {
-      regularTabIds.add(tab.id);
-      if (tab.active)
-        activeTabId = tab.id;
-    }
+      });
+      return treeItems.filter(item => (!item.states.includes('collapsed') && regularTabIds.has(item.id)) || item.id == activeTabId);
+    });
 
     if (activeTabId) {
-      const visibleItems = treeItems.filter(item => (!item.states.includes('collapsed') && regularTabIds.has(item.id)) || item.id == activeTabId);
       const position = visibleItems.findIndex(item => item.id == activeTabId);
       stylesForWindow.set(windowId, `
         #tabbar[data-window-id="${windowId}"] #normal-tabs-container-wrapper,
