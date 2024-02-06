@@ -12,21 +12,32 @@ import {
 const TST_ID = 'treestyletab@piro.sakura.ne.jp';
 
 const stylesForWindow = new Map();
+let mGetTreeType = 'get-tree';
 
 async function registerToTST() {
   try {
-    await browser.runtime.sendMessage(TST_ID, {
-      type: 'register-self' ,
-      name: browser.i18n.getMessage('extensionName'),
-      //icons: browser.runtime.getManifest().icons,
-      listeningTypes: [
-        'sidebar-show',
-        'tree-attached',
-        'tree-detached',
-        'tree-collapsed-state-changed',
-      ],
-      allowBulkMessaging: true,
-    });
+    const [TSTVersion] = await Promise.all([
+      browser.runtime.sendMessage(TST_ID, { type: 'vet-version' }),
+      browser.runtime.sendMessage(TST_ID, {
+        type: 'register-self' ,
+        name: browser.i18n.getMessage('extensionName'),
+        //icons: browser.runtime.getManifest().icons,
+        listeningTypes: [
+          'sidebar-show',
+          'tree-attached',
+          'tree-detached',
+          'tree-collapsed-state-changed',
+        ],
+        allowBulkMessaging: true,
+        lightTree: true,
+      }),
+    ]);
+    if (TSTVersion && parseInt(TSTVersion.split('.')[0]) >= 4) {
+      mGetTreeType = 'get-light-tree';
+    }
+    else {
+      mGetTreeType = 'get-tree';
+    }
     tryReset();
   }
   catch(_error) {
@@ -120,7 +131,7 @@ function reserveToUpdateActiveTabMarker(windowId) {
     const [regularTabs, treeItems] = await Promise.all([
       browser.tabs.query({ pinned: false, hidden: false, windowId }),
       browser.runtime.sendMessage(TST_ID, {
-        type: 'get-tree',
+        type: mGetTreeType,
         tabs: '*',
         windowId,
       }),
