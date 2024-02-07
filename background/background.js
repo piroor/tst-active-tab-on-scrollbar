@@ -143,7 +143,6 @@ function reserveToUpdateActiveTabMarker(windowId) {
         windowId,
       }),
     ]).then(async ([visibleItems, activeTabs]) => {
-      console.log('visibleItems: ', visibleItems.length);
       if (activeTabs.length > 0)
         activeTabId = activeTabs[0].id;
       if (visibleItems && visibleItems.length > 0) {
@@ -153,7 +152,6 @@ function reserveToUpdateActiveTabMarker(windowId) {
             visibleItems = [...visibleItems, ...activeTabs].sort((a, b) => a.index - b.index);
             position = visibleItems.findIndex(item => item.id == activeTabId);
           }
-          console.log('position: ', position);
         }
         return visibleItems;
       }
@@ -166,8 +164,6 @@ function reserveToUpdateActiveTabMarker(windowId) {
           interval: 100,
         }),
       ]);
-      console.log('regularTabs: ', regularTabs.length);
-      console.log('treeItems: ', treeItems.length);
       const regularTabIds = new Set(regularTabs.map(tab => tab.id));
       visibleItems = treeItems.filter(item => (!item.states.includes('collapsed') && regularTabIds.has(item.id)) || item.id == activeTabId);
       position = visibleItems.findIndex(item => item.id == activeTabId);
