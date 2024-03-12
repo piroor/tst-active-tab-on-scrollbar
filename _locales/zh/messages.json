@@ -1,0 +1,36 @@
+{
+  "extensionName": {
+    "message": "TST Active Tab on Scroll Bar - TST 滚动栏上标记活动标签页",
+    "hash": "9158a17621a3e68211ce7d72d3d88bc8"
+  },
+  "extensionDescription": {
+    "message": "提供一个标记，用来指明活动标签页在 Tree Style Tab 侧栏中的位置。",
+    "hash": "97b43c25ffaaebd08a7e05705430552e"
+  },
+  "config_colorMode_caption": {
+    "message": "标记颜色：",
+    "hash": "b380603e984b7430fd3c3c0194798b7e"
+  },
+  "config_colorCode_label": {
+    "message": "所选颜色",
+    "hash": "8c2aa9911bbe214a85ea83a0625fef5a"
+  },
+  "config_colorCSSValue_label": {
+    "message": "CSS 值",
+    "hash": "4eab371426642503f8f8fa9aa3d7a365"
+  },
+  "config_opacity_label": {
+    "message": "不透明度 (0-1)",
+    "hash": "bcf9c96d7e2cd3ef120a4af3fbd68e99"
+  },
+  "config_width_label": {
+    "message": "宽度",
+    "hash": "f6322e65aa252c2bfebeef3642eda579"
+  },
+  "config_minHeight_label": {
+    "message": "最小高度",
+    "hash": "20bcf9c03df123fa951ded25aee67bac"
+  },
+
+  "__WET_LOCALE__": { "message": "zh" }
+}
