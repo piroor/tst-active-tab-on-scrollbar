@@ -6,10 +6,12 @@
 'use strict';
 
 import {
-  configs
+  configs,
+  TST_ID,
+  WS_ID,
+  callTSTAPI,
+  getTSTVersion,
 } from '/common/common.js';
-
-const TST_ID = 'treestyletab@piro.sakura.ne.jp';
 
 const stylesForWindow = new Map();
 let mGetTreeType = 'get-tree';
@@ -17,8 +19,8 @@ let mGetTreeType = 'get-tree';
 async function registerToTST() {
   try {
     const [TSTVersion] = await Promise.all([
-      browser.runtime.sendMessage(TST_ID, { type: 'get-version' }),
-      browser.runtime.sendMessage(TST_ID, {
+      getTSTVersion(),
+      callTSTAPI({
         type: 'register-self' ,
         name: browser.i18n.getMessage('extensionName'),
         //icons: browser.runtime.getManifest().icons,
@@ -62,6 +64,7 @@ configs.$addObserver(key => {
 function onMessageExternal(message, sender) {
   switch (sender.id) {
     case TST_ID:
+    case WS_ID:
       if (message && message.messages) {
         for (const oneMessage of message.messages) {
           onMessageExternal(oneMessage, sender);
@@ -131,7 +134,7 @@ function reserveToUpdateActiveTabMarker(windowId) {
     let activeTabId;
     let position = -1;
     const visibleItems = await Promise.all([
-      browser.runtime.sendMessage(TST_ID, {
+      callTSTAPI({
         type: mGetTreeType,
         tabs: 'NormalVisibles',
         windowId,
@@ -157,7 +160,7 @@ function reserveToUpdateActiveTabMarker(windowId) {
       }
       const [regularTabs, treeItems] = await Promise.all([
         browser.tabs.query({ pinned: false, hidden: false, windowId }),
-        browser.runtime.sendMessage(TST_ID, {
+        callTSTAPI({
           type: mGetTreeType,
           tabs: '*',
           windowId,
@@ -219,7 +222,7 @@ reserveToUpdateActiveTabMarker.timers = new Map();
 
 function applyStyles() {
   const color = configs.colorMode == 'CSSValue' ? configs.colorCSSValue : configs.colorCode;
-  browser.runtime.sendMessage(TST_ID, {
+  callTSTAPI({
     type: 'register-self' ,
     style: `
       #normal-tabs-container.overflow::after /* for TST 4.x or later */,
