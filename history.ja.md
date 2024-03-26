@@ -1,6 +1,9 @@
 # 更新履歴
 
  - master/HEAD
+ - 1.3.2 (2024.3.26)
+   * Waterfox G6.0.10以降に含まれる「タブサイドバー」に対応
+   * zhロケール追加（by [NightSharp](https://github.com/NightSharp), thanks!）
  - 1.3.1 (2024.2.8)
    * 将来のリリースのTST向けに処理を最適化
  - 1.3 (2024.2.2)
