@@ -241,13 +241,17 @@ function applyStyles() {
         content: none;
         display: none;
       }
-      :root.left #normal-tabs-container::after,
-      :root.left .tabs::after {
-        left: 0;
+      :root.left:not(.rtl) #normal-tabs-container::after,
+      :root.left:not(.rtl) .tabs::after,
+      :root.right.rtl #normal-tabs-container::after,
+      :root.right.rtl .tabs::after {
+        inset-inline-start: 0;
       }
-      :root.right #normal-tabs-container::after,
-      :root.right .tabs::after {
-        right: 0;
+      :root.right:not(.rtl) #normal-tabs-container::after,
+      :root.right:not(.rtl) .tabs::after,
+      :root.left.rtl #normal-tabs-container::after,
+      :root.left.rtl .tabs::after {
+        inset-inline-end: 0;
       }
       ${Array.from(stylesForWindow.values()).join('\n')}
     `
