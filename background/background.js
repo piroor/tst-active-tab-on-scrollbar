@@ -21,8 +21,8 @@ async function registerToTST() {
     const [TSTVersion] = await Promise.all([
       getTSTVersion(),
       callTSTAPI({
-        type: 'register-self' ,
-        name: browser.i18n.getMessage('extensionName'),
+        type:           'register-self',
+        name:           browser.i18n.getMessage('extensionName'),
         //icons: browser.runtime.getManifest().icons,
         listeningTypes: [
           'sidebar-show',
@@ -31,7 +31,7 @@ async function registerToTST() {
           'tree-collapsed-state-changed',
         ],
         allowBulkMessaging: true,
-        lightTree: true,
+        lightTree:          true,
       }),
     ]);
     if (TSTVersion && parseInt(TSTVersion.split('.')[0]) >= 4) {
@@ -135,8 +135,8 @@ function reserveToUpdateActiveTabMarker(windowId) {
     let position = -1;
     const visibleItems = await Promise.all([
       callTSTAPI({
-        type: mGetTreeType,
-        tabs: 'NormalVisibles',
+        type:     mGetTreeType,
+        tabs:     'NormalVisibles',
         windowId,
         interval: 100,
       }),
@@ -161,8 +161,8 @@ function reserveToUpdateActiveTabMarker(windowId) {
       const [regularTabs, treeItems] = await Promise.all([
         browser.tabs.query({ pinned: false, hidden: false, windowId }),
         callTSTAPI({
-          type: mGetTreeType,
-          tabs: '*',
+          type:     mGetTreeType,
+          tabs:     '*',
           windowId,
           interval: 100,
         }),
@@ -223,7 +223,7 @@ reserveToUpdateActiveTabMarker.timers = new Map();
 function applyStyles() {
   const color = configs.colorMode == 'CSSValue' ? configs.colorCSSValue : configs.colorCode;
   callTSTAPI({
-    type: 'register-self' ,
+    type:  'register-self',
     style: `
       #normal-tabs-container.overflow::after /* for TST 4.x or later */,
       #tabbar.overflow .tabs::after /* for TST 3.x or older */ {
